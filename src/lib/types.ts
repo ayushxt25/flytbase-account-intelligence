@@ -1,10 +1,13 @@
 export type EvidenceStatus = "verified" | "told" | "claim" | "unknown";
 export type Stage = "identified" | "qualified" | "cleared" | "agreed" | "unknown";
+export type Readiness = "BLOCKED" | "EVIDENCE INCOMPLETE" | "READY FOR REVIEW" | "UNKNOWN";
+export type BlockerStatus = "open" | "cleared" | "unknown";
+export type Blocker = { description:string; status:BlockerStatus; sourceIds:string[] };
 export type Evidence = { id:string; type:string; status:EvidenceStatus; summary:string; saidBy?:string; raw?:unknown };
-export type Opportunity = { id:string; name:string; stage:Stage; value?:number; currency?:string; evidenceIds:string[]; valueStatus:EvidenceStatus; blockers:string[]; deadline?:string };
+export type Opportunity = { id:string; name:string; stage:Stage; value?:number; currency?:string; evidenceIds:string[]; valueStatus:EvidenceStatus; blockers:Blocker[]; deadline?:string; deadlineMeta?:{soon?:boolean;passed?:boolean;met?:boolean;movesLeft?:number|null}; readiness?:Readiness; readinessReason?:string };
 export type Contact = { id:string; name:string; role:string; relationship:"guarded"|"neutral"|"warm"|"ally"|"unknown"; available?:boolean; dealIds:string[]; evidenceIds:string[] };
 export type Action = { id:string; title:string; owner:string; targetDate:string; sourceConfirmedDate?:string; dealId?:string; rationale:string; priority:number; evidenceIds?:string[]; impact?:string };
 export type Risk = { id:string; severity:"critical"|"high"|"medium"; impact:string; consequence?:string; dealId?:string; mitigation:string; evidenceIds:string[] };
 export type Gap = { id:string; title:string; why:string; provider?:string; nextAction?:string; dealId?:string; evidenceIds:string[] };
 export type Account = { id:string; name:string; opportunities:Opportunity[]; contacts:Contact[]; evidence:Evidence[]; actions:Action[]; risks:Risk[]; gaps:Gap[]; raw:unknown };
-export type AppState = { accounts:Account[]; events:Evidence[]; lastSync?:string; stale:boolean; configured:boolean; upstream:"connected"|"cooling_down"|"unavailable"|"unconfigured"; error?:string; rawAccounts?:unknown; rawPaperwork?:unknown };
+export type AppState = { accounts:Account[]; events:Evidence[]; lastSync?:string; lastAccountsRefresh?:string; lastAdditionalRefresh?:string; additionalAccountDiagnostic?:string; discoveredAdditionalIds?:string[]; pendingAdditionalIds?:string[]; fetchedAdditionalIds?:string[]; pendingPaperwork?:boolean; additionalAccountFetched?:boolean; rawAdditionalAccounts?:unknown[]; stale:boolean; configured:boolean; upstream:"connected"|"cooling_down"|"unavailable"|"unconfigured"; error?:string; rawAccounts?:unknown; rawPaperwork?:unknown };
