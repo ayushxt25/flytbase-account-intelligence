@@ -1,0 +1,1 @@
+import { NextResponse } from "next/server"; import { sync } from "@/lib/sync"; export const dynamic="force-dynamic"; export async function POST(){const r=await sync();return NextResponse.json(r.state||{error:r.reason},{status:r.state?200:503})}

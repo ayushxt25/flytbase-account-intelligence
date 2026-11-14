@@ -1,0 +1,1 @@
+import { NextResponse } from "next/server"; import { redisConfigured } from "@/lib/redis"; export function GET(){return NextResponse.json({ok:true,redisConfigured,aqConfigured:Boolean(process.env.AQ_TOKEN),timestamp:new Date().toISOString()})}
